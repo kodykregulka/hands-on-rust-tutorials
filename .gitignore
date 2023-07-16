@@ -1,0 +1,10 @@
+target/
+*.class
+*.jar
+*.war
+*.exe
+*.ear
+*.logs
+*.iml
+*.idea/
+*.vscode
