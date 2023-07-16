@@ -1,19 +1,43 @@
 use std::io::stdin;
 use std::collections::HashMap;
 
-#[derive(Hash, Eq, PartialEq, Debug)]
+#[derive(Debug)]
+enum VisitorAction {
+	Accept,
+	AcceptWithNote {note: String},
+	Refuse,
+	Probation,
+}
+
+#[derive(Debug)]
 struct Visitor {
 	name: String,
-	greeting: String,
+	action: VisitorAction,
+	age: i8,
 }
 
 impl Visitor {
-	fn new(name: &str, greeting: &str) -> Visitor {
-		Visitor {name: name.to_string(), greeting: greeting.to_string()}
+	fn new(name: &str, action: VisitorAction, age: i8) -> Self {
+		Self {
+			name: name.to_lowercase(),
+			action,
+			age,
+		}
 	}
 
-	fn greet(&self) {
-		println!("{}", self.greeting);
+	fn greet(&self){
+		match &self.action{
+			VisitorAction::Accept=> println!("Welcome to the treehouse, {}", self.name),
+			VisitorAction::AcceptWithNote { note } => {
+				println!("Welcome to the treehouse, {}", self.name);
+				println!("{}", note);
+				if self.age < 21 {
+					println!("Do not serve alcohol to {}", self.name);
+				}
+			},
+			VisitorAction::Probation => println!("{} is now a probational member", self.name),
+			VisitorAction::Refuse => println!("Do not let in {}", self.name),
+		}
 	}
 }
 
@@ -46,22 +70,30 @@ fn main() {
 	/*let visitor_list = HashMap::from([
 		("kody", Visitor::new("kody", "yo yo yo")),
 	]);*/
-	let visitor_list = [
-		Visitor::new("bert", "hi"),
-		Visitor::new("rob", "come in"),
-		Visitor::new("kody", "Welcome"),
+	let mut visitor_list = vec![
+		Visitor::new("bert", VisitorAction::Accept, 45),
+		Visitor::new("rob", VisitorAction::AcceptWithNote { note: String::from("nut allergy") }, 15),
+		Visitor::new("kody", VisitorAction::Refuse, 30),
 	];
 
-	println!("Yo, whats your name?");
-	let name = what_is_your_name();
+	loop{
+		println!("Yo, whats your name?");
+		let name = what_is_your_name();
+		if(name.is_empty()){
+			break;
+		}
 
-	let known_visitor = visitor_list
-		.iter()
-		.find(|visitor| visitor.name == name);
+		let known_visitor = visitor_list
+			.iter()
+			.find(|visitor| visitor.name == name);
 
-	match known_visitor {
-		Some(visitor) => visitor.greet(),
-		None => println!("You are not welcome into the cool kids club")
+		match known_visitor {
+			Some(visitor) => visitor.greet(),
+			None => {
+				println!("You are not welcome into the cool kids club this time");
+				visitor_list.push(Visitor::new(&name, VisitorAction::Probation, 0))
+			}
+		}
 	}
 
 	/*println!("Hello, {:?}", name);
