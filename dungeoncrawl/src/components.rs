@@ -6,6 +6,9 @@ pub struct Render {
 	pub glyph: FontCharType,
 }
 
+//tag components
+//empty struct containing no data indicating that an entity with this component is the player
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Player;
-//empty struct containing no data indicating that an entity with this component is the player
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct Enemy;
