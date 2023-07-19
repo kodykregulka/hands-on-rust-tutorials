@@ -12,6 +12,21 @@ pub struct WantsToMove {
 	pub destination: Point,
 }
 
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct WantsToAttack {
+	pub attacker: Entity,
+	pub victim: Entity,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct Health {
+	pub current: i32,
+	pub max: i32,
+}
+
+#[derive(Clone, PartialEq)]
+pub struct Name(pub String);
+
 //tag components
 //empty struct containing no data indicating that an entity with this component is the player
 #[derive(Clone, Copy, Debug, PartialEq)]
