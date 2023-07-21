@@ -1,5 +1,22 @@
 pub use crate::prelude::*;
+use std::collections::HashSet;
 
+//tag components
+//empty struct containing no data indicating that an entity with this component is the player
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct Player;
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct Enemy;
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct MovingRandomly;
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct ChasingPlayer;
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct Item;
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct AmuletOfYala;
+
+//complex components
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Render {
 	pub color: ColorPair,
@@ -27,17 +44,27 @@ pub struct Health {
 #[derive(Clone, PartialEq)]
 pub struct Name(pub String);
 
-//tag components
-//empty struct containing no data indicating that an entity with this component is the player
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub struct Player;
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub struct Enemy;
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub struct MovingRandomly;
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub struct ChasingPlayer;
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub struct Item;
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub struct AmuletOfYala;
+#[derive(Clone, Debug, PartialEq)]
+pub struct FieldOfView {
+	pub visible_tiles: HashSet<Point>,
+	pub radius: i32,
+	pub is_dirty: bool,
+}
+
+impl FieldOfView {
+	pub fn new(radius: i32) -> Self {
+		Self {
+			visible_tiles: HashSet::new(),
+			radius,
+			is_dirty: true,
+		}
+	}
+
+	pub fn clone_dirty(&self) -> Self {
+		Self {
+			visible_tiles: HashSet::new(),
+			radius: self.radius,
+			is_dirty: true,
+		}
+	}
+}
