@@ -4,7 +4,9 @@ use std::collections::HashSet;
 //tag components
 //empty struct containing no data indicating that an entity with this component is the player
 #[derive(Clone, Copy, Debug, PartialEq)]
-pub struct Player;
+pub struct Player{
+	pub map_level: u32
+}
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Enemy;
 #[derive(Clone, Copy, Debug, PartialEq)]

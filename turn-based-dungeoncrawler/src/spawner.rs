@@ -5,10 +5,10 @@ pub fn spawn_entity(
 	rng: &mut RandomNumberGenerator,
 	pos: Point
 ){
-	let roll = rng.roll_dice(1, 6);
+	let roll = rng.roll_dice(1, 20);
 	match roll {
-		1 => spawn_healing_potion(ecs, pos),
-		2 => spawn_magic_mapper(ecs, pos),
+		1..=3 => spawn_healing_potion(ecs, pos),
+		4 => spawn_magic_mapper(ecs, pos),
 		_ => spawn_monster(ecs, rng, pos)
 	}
 }
@@ -28,7 +28,7 @@ pub fn spawn_amulet_of_yala(ecs: &mut World, pos: Point) {
 
 pub fn spawn_player(ecs: &mut World, pos: Point) {
 	ecs.push((
-		Player,
+		Player{map_level: 0},
 		pos,
 		Render {
 			color: ColorPair::new(WHITE, BLACK),
